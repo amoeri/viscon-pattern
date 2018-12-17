@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>VIScon pattern</title>
+    <script type="application/javascript">
+      function draw() {
+        var colors = [
+          {name: 'blue', rgb: 'rgb(38, 171, 226)'},
+          {name: 'yellow', rgb: 'rgb(246, 225, 10)'},
+          {name: 'orange', rgb: 'rgb(246, 157, 30)'},
+          {name: 'magenta', rgb: 'rgb(199, 25, 225)'}
+        ]
+        var size = 50; //side lenght
+        var stroke = 6;
+        var space = 4;
+        var wshift = 3 * size + 2 * (stroke + space);
+        var hshift = (Math.sqrt(3) * size + stroke + space)/2;
+        var canvas = document.getElementById('canvas');
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        if (canvas.getContext) {
+          var ctx = canvas.getContext('2d');
+          ctx.canvas.width  = width;
+          ctx.canvas.height = height;
+          var x = 0;
+          var offset = 0;
+          for (var h = 0; h <= height + hshift; h += hshift) {
+            if(x%2 == 0) offset = 0;
+            else offset = wshift/2;
+            x++;
+            for (var w = offset; w <= width + wshift; w += wshift) {
+              color = Math.floor(Math.random()*4);
+              hexagon(ctx, w, h, size, stroke, colors[color].rgb);
+            }       
+          }
+        }
+      }
+      function hexagon(ctx, centerX, centerY, size, thickness, color) {
+        ctx.beginPath();
+        ctx.moveTo (centerX +  size * Math.cos(0), centerY +  size *  Math.sin(0));          
+        for (var i = 1; i <= 5; i++) 
+            ctx.lineTo (centerX + size * Math.cos(i * 2 * Math.PI / 6), centerY + size * Math.sin(i * 2 * Math.PI / 6));
+        ctx.closePath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = thickness;
+        ctx.stroke();
+      }
+    </script>
+    <style>
+      html, body {margin: 0; height: 100%; overflow: hidden}
+    </style>
+  </head>
+  <body onload="draw();" onclick="draw();">
+    <canvas id="canvas"></canvas>
+  </body>
+</html>
